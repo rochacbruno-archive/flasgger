@@ -81,9 +81,10 @@ class APIDocsView(MethodView):
         json or Swagger UI
         """
         base_endpoint = self.config.get('endpoint', 'flasgger')
+        proxy_url = self.config.get('proxy_url', '.')
         specs = [
             {
-                "url": url_for(".".join((base_endpoint, spec['endpoint']))),
+                "url": proxy_url + url_for(f"{base_endpoint}.{spec['endpoint']}"),
                 "title": spec.get('title', 'API Spec 1'),
                 "name": spec.get('name', None),
                 "version": spec.get("version", '0.0.1'),
@@ -112,38 +113,27 @@ class APIDocsView(MethodView):
             data['flasgger_version'] = __version__
             data['favicon'] = self.config.get(
                 'favicon',
-                url_for(
-                    '{0}.static'.format(base_endpoint),
-                    filename='favicon-32x32.png'
-                )
+                proxy_url + url_for('flasgger.static', filename='favicon-32x32.png')
             )
             data['swagger_ui_bundle_js'] = self.config.get(
                 'swagger_ui_bundle_js',
-                url_for(
-                    '{0}.static'.format(base_endpoint),
-                    filename='swagger-ui-bundle.js'
-                )
+                proxy_url + url_for('flasgger.static', filename='swagger-ui-bundle.js')
             )
             data['swagger_ui_standalone_preset_js'] = self.config.get(
                 'swagger_ui_standalone_preset_js',
-                url_for(
-                    '{0}.static'.format(base_endpoint),
-                    filename='swagger-ui-standalone-preset.js'
-                )
+                proxy_url + url_for('flasgger.static',
+                        filename='swagger-ui-standalone-preset.js')
             )
             data['jquery_js'] = self.config.get(
                 'jquery_js',
-                url_for(
-                    '{0}.static'.format(base_endpoint),
-                    filename='lib/jquery.min.js'
-                )
+                proxy_url + url_for('flasgger.static', filename='lib/jquery.min.js')
             )
             data['swagger_ui_css'] = self.config.get(
                 'swagger_ui_css',
-                url_for(
-                    '{0}.static'.format(base_endpoint),
-                    filename='swagger-ui.css'
-                )
+                proxy_url + url_for('flasgger.static', filename='swagger-ui.css')
+            )
+            data['swagger_custom_css_styles'] = self.config.get(
+                'swagger_custom_css_styles',''
             )
             return render_template(
                 'flasgger/index.html',
@@ -631,7 +621,7 @@ class Swagger(object):
             return view
 
         if self.config.get('swagger_ui', True):
-            uiversion = self.config.get('uiversion', 3)
+            uiversion = int(self.config.get('uiversion', 3))
             blueprint = Blueprint(
                 self.config.get('endpoint', 'flasgger'),
                 __name__,
@@ -756,8 +746,7 @@ class Swagger(object):
                 parsed_data['json'] = request.json or {}
             for location, data in parsed_data.items():
                 try:
-                    ret = self.validation_function(data, schemas[location])
-                    print(ret)
+                    self.validation_function(data, schemas[location])
                 except jsonschema.ValidationError as e:
                     self.validation_error_handler(e, data, schemas[location])
 
