@@ -3,6 +3,13 @@ Changelog
 
 These are all the changes in Flasgger since the 0.6.0 release
 
+0.9.7b3
+- Remove dependency 'six' as Python2 support was removed
+- Fix wrong assumption that the value passed for 'uiversion' is always numeric
+- Remove unnecessary debug message
+- Add optional 'proxy_url' config variable to use when path to static are not relative
+- Add new 'swagger_custom_css_styles' optional variable to pass/append custom CSS styles in the head
+
 0.9.7b2
 -----
 - chore: noqa for APISpecsView.get bare exception with json.dumps fallback (exception logging preserved)
