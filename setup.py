@@ -54,13 +54,13 @@ setup(
         'PyYAML>=3.0',
         'jsonschema>=3.0.1',
         'mistune',
-        'six>=1.10.0',
         'packaging',
     ],
     classifiers=[
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.9',
     ],
     entry_points={
         'flask.commands': [
