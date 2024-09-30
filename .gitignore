@@ -57,5 +57,7 @@ target/
 *.swp
 .eggs/
 venv/
+.venv/
 .activate.sh
 .deactivate.sh
+.pypirc
