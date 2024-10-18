@@ -418,6 +418,8 @@ class Swagger(object):
             data["securityDefinitions"] = self.config.get(
                 'securityDefinitions'
             )
+        if self.config.get("security"):
+            data["security"] = self.config.get("security")
 
         if is_openapi3(openapi_version):
             # enable oas3 fields when openapi_version is 3.*.*

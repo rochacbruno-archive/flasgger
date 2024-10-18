@@ -3,6 +3,10 @@ Changelog
 
 These are all the changes in Flasgger since the 0.6.0 release
 
+0.9.7b3
+-----
+- fix: Fix Swagger UI Authorize setting not added to request header
+
 0.9.7b2
 -----
 - chore: noqa for APISpecsView.get bare exception with json.dumps fallback (exception logging preserved)
