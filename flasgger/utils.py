@@ -9,7 +9,6 @@ import re
 import sys
 import jsonschema
 import yaml
-from six import string_types, text_type
 from copy import deepcopy
 from functools import wraps
 from importlib import import_module
@@ -269,7 +268,7 @@ def swag_from(
     def is_path(specs):
         """ Returns True if specs is a string or pathlib.Path
         """
-        is_str_path = isinstance(specs, string_types)
+        is_str_path = isinstance(specs, str)
         try:
             from pathlib import Path
             is_py3_path = isinstance(specs, Path)
@@ -928,7 +927,7 @@ class StringLike(object):
 
     @property
     def text_type(self):
-        return text_type
+        return str
 
 
 class LazyString(StringLike):
